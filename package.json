@@ -1,0 +1,9 @@
+{
+  "name": "com.solutions.forspace.app.movies",
+  "description": "movies",
+  "scale": 0.66,
+  "dependencies": {
+    "@lightningjs/sdk": "^5.1.0",
+    "@lightningjs/core": "^2.5.0"
+  }
+}

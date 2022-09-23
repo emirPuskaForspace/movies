@@ -1,0 +1,6 @@
+{
+  "name": "movies",
+  "identifier": "com.solutions.forspace.app.movies",
+  "version": "1.0.0",
+  "icon": "./static/icon.png"
+}
