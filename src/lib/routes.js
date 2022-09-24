@@ -14,11 +14,11 @@ export default {
       component: NotFound,
     },
     {
-      path: "movie/:movieId", 
+      path: "movie-detail/:movieId", 
       component: MovieDetail,
     },
     {
-      path: "movie", 
+      path: "movie-detail", 
       component: MovieDetail,
     }
   ],

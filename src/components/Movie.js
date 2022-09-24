@@ -1,37 +1,8 @@
-import { Lightning, Router } from "@lightningjs/sdk";
+import { Lightning, Router, Utils } from "@lightningjs/sdk";
 import Tile from "./Tile";
 import { getImageUrl, getMovies } from "../lib/api";
 
 export default class Movie extends Lightning.Component {
-  static _template() {
-    return {
-      Background: {
-        rect: true,
-        w: 1920,
-        h: 1080,
-        color: 0xff2e003e,
-      },
-      Title: {
-        text: {
-          text: "Upcoming Movies",
-          textColor: 0xffffffff,
-          fontSize: 75,
-        },
-        x: 42,
-        y: 30,
-        zIndex: 10,
-      },
-      Slider: {
-        x: 480,
-        y: 500,
-        mount: 0.5,
-        w: 800,
-        h: 350,
-        Wrapper: {},
-      },
-    };
-  }
-
   _init() {
     this.page = 1;
     this.index = 0;
@@ -54,19 +25,152 @@ export default class Movie extends Lightning.Component {
         },
       ],
     });
-    this.tag('Background')
-    .animation({
-      duration: 15,
+    this.tag("Background")
+      .animation({
+        duration: 15,
+        repeat: -1,
+        actions: [
+          {
+            t: "",
+            p: "color",
+            v: {
+              0: { v: 0xff2e003e },
+              0.5: { v: 0xff4b0065 },
+              0.8: { v: 0xff2e003e },
+            },
+          },
+        ],
+      })
+      .start();
+    this.previousPageAnimation = this.tag("PreviousPageIndicator").animation({
+      duration: 1,
       repeat: -1,
       actions: [
         {
-          t: '',
-          p: 'color',
-          v: { 0: { v: 0xff2e003e }, 0.5: { v: 0xff4b0065}, 0.8: { v: 0xff2e003e } },
+          p: "y",
+          v: {
+            0: { v: 100 },
+            0.5: { v: 80 },
+            0.8: { v: 90 },
+            1: { v: 100 },
+          },
         },
       ],
-    })
-    .start()
+    });
+    this.previousTextAnimation = this.tag("Previous").animation({
+      duration: 1,
+      repeat: -1,
+      actions: [
+        {
+          p: "y",
+          v: {
+            0: { v: 150 },
+            0.5: { v: 130 },
+            0.8: { v: 140 },
+            1: { v: 150 },
+          },
+        },
+      ],
+    });
+    this.tag("NextPageIndicator")
+      .animation({
+        duration: 1,
+        repeat: -1,
+        actions: [
+          {
+            p: "y",
+            v: {
+              0: { v: 900 },
+              0.5: { v: 950 },
+              0.8: { v: 920 },
+              1: { v: 900 },
+            },
+          },
+        ],
+      })
+      .start();
+    this.tag("Next")
+      .animation({
+        duration: 1,
+        repeat: -1,
+        actions: [
+          {
+            p: "y",
+            v: {
+              0: { v: 800 },
+              0.5: { v: 850 },
+              0.8: { v: 820 },
+              1: { v: 800 },
+            },
+          },
+        ],
+      })
+      .start();
+  }
+
+  static _template() {
+    return {
+      Background: {
+        rect: true,
+        w: 1920,
+        h: 1080,
+        color: 0xff2e003e,
+      },
+      Title: {
+        text: {
+          text: "Upcoming Movies",
+          textColor: 0xffffffff,
+          fontSize: 55,
+        },
+        x: 42,
+        y: 30,
+        zIndex: 10,
+      },
+      Previous: {
+        x: 830,
+        y: 150,
+        visible: false,
+        text: {
+          text: "Previous",
+        },
+      },
+      PreviousPageIndicator: {
+        x: 900,
+        y: 100,
+        flex: {},
+        mount: 0.5,
+        visible: false,
+        Arrow: {
+          src: Utils.asset("images/arrow.png"),
+        },
+      },
+      Slider: {
+        x: 500,
+        y: 500,
+        mount: 0.5,
+        w: 800,
+        h: 350,
+        Wrapper: {},
+      },
+      Next: {
+        x: 850,
+        y: 800,
+        text: {
+          text: "Next",
+        },
+      },
+      NextPageIndicator: {
+        x: 900,
+        y: 900,
+        flex: {},
+        mount: 0.5,
+
+        Arrow: {
+          src: Utils.asset("images/arrow.png"),
+          rotation: Math.PI * 1, //rotation for 270 degreee
+        },
+      },
+    };
   }
 
   async addDataToScreen(pageIndex) {
@@ -74,7 +178,7 @@ export default class Movie extends Lightning.Component {
     this.loadedData = data.results;
     this.dataLength = data.results.length;
     let movies = [];
-    for (let i = 0; i < this.dataLength - 1; i++) {
+    for (let i = 0; i < this.dataLength; i++) {
       const movie = data.results[i];
       movies.push({
         type: Tile,
@@ -99,12 +203,6 @@ export default class Movie extends Lightning.Component {
   _handleLeft() {
     if (this.index === 0) {
       this.index = this.dataLength - 1;
-      this.page = this.page - 1;
-      if (this.page < 1) {
-        this.page = 1;
-      }
-      this.addDataToScreen(this.page);
-      this._animate();
     } else {
       this.index -= 1;
     }
@@ -113,14 +211,41 @@ export default class Movie extends Lightning.Component {
 
   _handleRight() {
     if (this.index === this.dataLength - 1) {
-      this.page++;
-      this.addDataToScreen(this.page);
       this.index = 0;
-      this._animate();
     } else {
       this.index += 1;
     }
     this.repositionWrapper();
+  }
+
+  _handleUp() {
+    if (this.page > 1) {
+      this.page--;
+      this._handlePreviousPageArrowVisibility();
+      this.addDataToScreen(this.page);
+      this._animate();
+    }
+  }
+
+  _handleDown() {
+    this.page++;
+    this._handlePreviousPageArrowVisibility();
+    this.addDataToScreen(this.page);
+    this._animate();
+  }
+
+  _handlePreviousPageArrowVisibility() {
+    if (this.page > 1) {
+      this.tag("PreviousPageIndicator").patch({ visible: true });
+      this.previousPageAnimation.start();
+      this.tag("Previous").patch({ visible: true });
+      this.previousTextAnimation.start();
+    } else {
+      this.previousPageAnimation.stop();
+      this.tag("PreviousPageIndicator").patch({ visible: false });
+      this.previousTextAnimation.stop();
+      this.tag("Previous").patch({ visible: false });
+    }
   }
 
   _animate() {
@@ -133,7 +258,6 @@ export default class Movie extends Lightning.Component {
   repositionWrapper() {
     const wrapper = this.tag("Wrapper");
     const sliderWidth = this.tag("Slider").w;
-    const title = this.tag("Title");
 
     const currentWrapperX = wrapper.transition("x").targetvalue || wrapper.x;
     const currentFocusChild = wrapper.children[this.index];
@@ -157,7 +281,6 @@ export default class Movie extends Lightning.Component {
 
   _handleEnter() {
     const movieId = this.loadedData[this.index].id;
-    console.log("Movie ID " + movieId);
-    Router.navigate("movie", { movieId: movieId });
+    Router.navigate("movie-detail", { movieId: movieId });
   }
 }

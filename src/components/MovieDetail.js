@@ -88,7 +88,7 @@ export default class MovieDetail extends Lightning.Component {
 
     this.dataLength = similarMovies.results.length;
     let movies = [];
-    for (let i = 0; i < this.dataLength - 1; i++) {
+    for (let i = 0; i < this.dataLength; i++) {
       const similarMovie = similarMovies.results[i];
       movies.push({
         type: Tile,
