@@ -11,7 +11,7 @@ export default class Movie extends Lightning.Component {
 
     this.addDataToScreen(this.page);
     this.animation = this.tag("Slider").animation({
-      duration: 5,
+      duration: 2,
       repeat: -1,
       //we can animate multiple properties
       actions: [
@@ -27,7 +27,7 @@ export default class Movie extends Lightning.Component {
     });
     this.tag("Background")
       .animation({
-        duration: 15,
+        duration: 5,
         repeat: -1,
         actions: [
           {
@@ -177,10 +177,10 @@ export default class Movie extends Lightning.Component {
     const data = await getMovies("/movie/upcoming?page=" + pageIndex);
     this.loadedData = data.results;
     this.dataLength = data.results.length;
-    let movies = [];
+    let movieTiles = [];
     for (let i = 0; i < this.dataLength; i++) {
       const movie = data.results[i];
-      movies.push({
+      movieTiles.push({
         type: Tile,
         x: 350 * i,
         Image: {
@@ -193,7 +193,7 @@ export default class Movie extends Lightning.Component {
         },
       });
     }
-    this.tag("Wrapper").children = movies;
+    this.tag("Wrapper").children = movieTiles;
   }
 
   _getFocused() {
