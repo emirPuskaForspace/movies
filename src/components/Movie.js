@@ -193,7 +193,7 @@ export default class Movie extends Lightning.Component {
         },
       });
     }
-    this.tag("Wrapper").children = movieTiles;
+    this.tag("Wrapper").patch({ children: movieTiles });
   }
 
   _getFocused() {
@@ -220,6 +220,7 @@ export default class Movie extends Lightning.Component {
 
   _handleUp() {
     if (this.page > 1) {
+      this._animateTiles();
       this.index = 0;
       this.page--;
       this._handlePreviousPageArrowVisibility();
@@ -229,6 +230,7 @@ export default class Movie extends Lightning.Component {
   }
 
   _handleDown() {
+    this._animateTiles();
     this.index = 0;
     this.page++;
     this._handlePreviousPageArrowVisibility();
@@ -255,6 +257,23 @@ export default class Movie extends Lightning.Component {
     setTimeout(() => {
       this.animation.stop();
     }, 1000);
+  }
+
+  _animateTiles() {
+    for (let i = 0; i < this.tag("Wrapper").children.length; i++) {
+      const child = this.tag("Wrapper").children[i];
+      child
+        .animation({
+          duration: 1,
+          repeat: 0.5,
+          stopMethod: "immediate",
+          actions: [
+            { p: "rotation", v: { 0: 0, 1: 6.29 } },
+            { t: "Image", p: "rotation", v: { 0: 0, 1: 6.29 } },
+          ],
+        })
+        .start();
+    }
   }
 
   repositionWrapper() {
@@ -286,7 +305,5 @@ export default class Movie extends Lightning.Component {
     Router.navigate("movie-detail", { movieId: movieId });
   }
 
-  _handleBack(){
-    
-  }
+  _handleBack() {}
 }
