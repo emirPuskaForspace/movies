@@ -285,4 +285,8 @@ export default class Movie extends Lightning.Component {
     const movieId = this.loadedData[this.index].id;
     Router.navigate("movie-detail", { movieId: movieId });
   }
+
+  _handleBack(){
+    
+  }
 }
