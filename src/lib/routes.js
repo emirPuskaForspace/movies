@@ -14,7 +14,7 @@ export default {
       component: NotFound,
     },
     {
-      path: "movie-detail/:movieId", 
+      path: "movie-detail/:movieDetail", 
       component: MovieDetail,
     },
     {

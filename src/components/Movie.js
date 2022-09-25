@@ -220,6 +220,7 @@ export default class Movie extends Lightning.Component {
 
   _handleUp() {
     if (this.page > 1) {
+      this.index = 0;
       this.page--;
       this._handlePreviousPageArrowVisibility();
       this.addDataToScreen(this.page);
@@ -228,6 +229,7 @@ export default class Movie extends Lightning.Component {
   }
 
   _handleDown() {
+    this.index = 0;
     this.page++;
     this._handlePreviousPageArrowVisibility();
     this.addDataToScreen(this.page);

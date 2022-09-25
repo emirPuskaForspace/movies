@@ -170,6 +170,7 @@ export default class MovieDetail extends Lightning.Component {
   }
 
   _handleBack() {
+    this.index = 0;
     Router.navigate("$");
   }
 }
