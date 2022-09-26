@@ -11,6 +11,6 @@
     "path": "./static",
     "log": true,
     "showVersion": true,
-    "inspector": true
+    "inspector": false
   }
 }

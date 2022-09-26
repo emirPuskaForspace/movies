@@ -1,8 +1,8 @@
-import { Lightning, Router, Utils } from "@lightningjs/sdk";
-import { getImageUrl, getMovieDetails, getMovies } from "../lib/api";
-import Tile from "./Tile";
+import { Router } from "@lightningjs/sdk";
+import { getImageUrl, getMovieDetails } from "../lib/api";
+import MoviePage from "./MoviePage";
 
-export default class MovieDetail extends Lightning.Component {
+export default class MovieDetail extends MoviePage {
   static _template() {
     return {
       Image: {
@@ -84,28 +84,7 @@ export default class MovieDetail extends Lightning.Component {
 
   async loadMovieDetails(movieId) {
     const movie = await getMovieDetails("/movie/" + movieId);
-    const similarMovies = await getMovies("/movie/" + movieId + "/similar");
-
-    this.dataLength = similarMovies.results.length;
-    let movies = [];
-    for (let i = 0; i < this.dataLength; i++) {
-      const similarMovie = similarMovies.results[i];
-      movies.push({
-        type: Tile,
-        x: 350 * i,
-        Image: {
-          src: getImageUrl(
-            similarMovie.poster_path || similarMovie.profile_path
-          ),
-        },
-        Label: {
-          text: {
-            text: similarMovie.title || similarMovie.name,
-          },
-        },
-      });
-    }
-    this.tag("Wrapper").children = movies;
+    this.addDataToSlider("/movie/" + movieId + "/similar");
 
     this.patch({
       Image: {
@@ -123,11 +102,7 @@ export default class MovieDetail extends Lightning.Component {
               "'",
           },
         },
-        Overview: {
-          text: {
-            text: movie.overview,
-          },
-        },
+        Overview: { text: { text: movie.overview } },
       },
     });
   }
@@ -152,21 +127,6 @@ export default class MovieDetail extends Lightning.Component {
 
   _getFocused() {
     return this.tag("Wrapper").children[this.index];
-  }
-
-  repositionWrapper() {
-    const wrapper = this.tag("Wrapper");
-    const sliderW = this.tag("Slider").w;
-    const currentWrapperX = wrapper.transition("x").targetvalue || wrapper.x;
-    const currentFocus = wrapper.children[this.index];
-    const currentFocusX = currentFocus.x + currentWrapperX;
-    const currentFocusOuterWidth = currentFocus.x + currentFocus.w;
-
-    if (currentFocusX < 0) {
-      wrapper.setSmooth("x", -currentFocus.x);
-    } else if (currentFocusOuterWidth > sliderW) {
-      wrapper.setSmooth("x", sliderW - currentFocusOuterWidth);
-    }
   }
 
   _handleBack() {
