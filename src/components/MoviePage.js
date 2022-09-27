@@ -1,5 +1,5 @@
 import { Lightning } from "@lightningjs/sdk";
-import { getImageUrl, getMovies } from "../lib/api";
+import { getImageUrl, loadMovies } from "../lib/api";
 import Tile from "./Tile";
 
 export default class MoviePage extends Lightning.Component {
@@ -12,7 +12,7 @@ export default class MoviePage extends Lightning.Component {
     };
   }
   async addDataToSlider(path) {
-    const data = await getMovies(path);
+    const data = await loadMovies(path);
     this.loadedData = data.results;
     this.dataLength = data.results.length;
     let movieTiles = [];
@@ -61,5 +61,9 @@ export default class MoviePage extends Lightning.Component {
         },
       });
     }
+  }
+
+  pageTransition() {
+    return 'left'
   }
 }

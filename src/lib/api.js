@@ -1,9 +1,12 @@
 import API_KEY_V4 from "./key";
+import axios from "axios";
+
 const API_BASE = "https://api.themoviedb.org/3";
 
 let tmdbConfig;
 let baseImageUrl = "https://image.tmdb.org/t/p/";
 const basePosterSize = "w185";
+
 
 const defaultFetchParams = {
   headers: {
@@ -13,7 +16,7 @@ const defaultFetchParams = {
 };
 
 function getImageUrl(path, posterSize = basePosterSize) {
-  console.log("BASE IMAGE URL: " + baseImageUrl);
+  console.log("BASE IMAGE URL: " + baseImageUrl + posterSize + path);
   return baseImageUrl + posterSize + path;
 }
 
@@ -40,21 +43,31 @@ const getMovies = async (path, params = {}) => {
   return fetch(url, requestParams).then((data) => data.json());
 };
 
+const loadMovies = async (path, params = {}) => {
+  const url = API_BASE + path;
+  const requestParams = {
+    ...defaultFetchParams,
+    ...params,
+  };
+  const response = await axios.get(url, requestParams);
+  console.log(`Result: ${response}`);
+  return response.data;
+};
+
 const loadConfig = async () => {
   const data = await getMovies("/configuration");
-  console.log("DATA: " + data);
   tmdbConfig = data;
   baseImageUrl = data.images?.base_url;
   return data;
 };
 
-const getMovieDetails = async (path, params ={}) =>{
+const getMovieDetails = async (path, params = {}) => {
   const url = API_BASE + path;
   const requestParams = {
     ...defaultFetchParams,
     ...params,
   };
   return fetch(url, requestParams).then((data) => data.json());
-}
+};
 
-export { getImageUrl, getMovies, getMovieDetails, loadConfig };
+export { getImageUrl, getMovies, loadMovies, getMovieDetails, loadConfig };

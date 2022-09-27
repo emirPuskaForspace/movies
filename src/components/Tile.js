@@ -12,11 +12,16 @@ export default class Tile extends Lightning.Component {
         h: (h) => h - 50,
       },
       Label: {
-        x: 10,
-        y: 280,
-        w: 220,
+        x: 5,
+        y: 274,
+        w: 230,
         color: 0xff000000,
-        text: { fontSize: 16 },
+        text: {
+          fontSize: 25,
+          textOverflow: null,
+          maxLines: 2,
+          overflowExt: "...",
+        },
         flex: {
           direction: "column",
         },

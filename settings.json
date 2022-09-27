@@ -10,7 +10,7 @@
   "platformSettings": {
     "path": "./static",
     "log": true,
-    "showVersion": true,
-    "inspector": false
+    "showVersion": false,
+    "inspector": true
   }
 }
