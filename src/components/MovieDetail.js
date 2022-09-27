@@ -1,4 +1,5 @@
 import { Router } from "@lightningjs/sdk";
+import { backgroundAnimation } from "../anim/animation";
 import { getImageUrl, getMovieDetails } from "../lib/api";
 import MoviePage from "./MoviePage";
 
@@ -6,6 +7,12 @@ const detailPosterSize = "w500";
 export default class MovieDetail extends MoviePage {
   static _template() {
     return {
+      Background: {
+        rect: true,
+        w: 1920,
+        h: 1080,
+        color: 0xff3d3d3b,
+      },
       Image: {
         x: 1400,
         y: 30,
@@ -15,7 +22,7 @@ export default class MovieDetail extends MoviePage {
       Title: {
         text: {
           text: "",
-          textColor: 0xff000000,
+          textColor: 0xffffffff,
           fontSize: 45,
         },
         x: 42,
@@ -29,7 +36,7 @@ export default class MovieDetail extends MoviePage {
         text: {
           text: "",
           fontSize: 32,
-          textColor: 0xff000000,
+          textColor: 0xffffffff,
         },
       },
       SimilarBackground: {
@@ -42,14 +49,13 @@ export default class MovieDetail extends MoviePage {
         y: 580,
       },
       SimilarTitle: {
-        x: 20,
-        y: 580,
+        x: -20,
+        y: 770,
         scale: 0.5,
         text: {
           text: "Similar Movies",
           textColor: 0xffffffff,
         },
-
         zIndex: 12,
       },
       Slider: {
@@ -68,6 +74,7 @@ export default class MovieDetail extends MoviePage {
   _init() {
     this.index = 0;
     this.dataLength = 6;
+    this.tag("Background").animation(backgroundAnimation).start();
   }
 
   set params(data) {

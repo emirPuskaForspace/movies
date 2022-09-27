@@ -6,8 +6,10 @@ export default class Tile extends Lightning.Component {
       w: 235,
       h: 328,
       rect: true,
-      color: 0xffe4dcf1,
+      color: 0xffffffff,
+      padding: 5,
       Image: {
+        scale: 0.95,
         w: (w) => w,
         h: (h) => h - 50,
       },
@@ -39,9 +41,9 @@ export default class Tile extends Lightning.Component {
 
   _focus() {
     this.patch({
-      smooth: { color: 0xff67008b, scale: 1.5 },
+      smooth: { color: 0xffffffff, scale: 1.5 },
       Label: {
-        smooth: { color: 0xffffffff },
+        smooth: { color: 0xff000000 },
       },
     });
   }

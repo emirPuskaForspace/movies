@@ -38,7 +38,7 @@ export default class Movie extends MoviePage {
         rect: true,
         w: 1920,
         h: 1080,
-        color: 0xff2e003e,
+        color: 0xff3d3d3b,
       },
       Title: {
         text: {

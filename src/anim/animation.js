@@ -22,9 +22,9 @@ const backgroundAnimation = {
       t: "",
       p: "color",
       v: {
-        0: { v: 0xff2e003e },
-        0.5: { v: 0xff4b0065 },
-        0.8: { v: 0xff2e003e },
+        0: { v: 0xff3d3d3b },
+        0.5: { v: 0xff50504e},
+        0.8: { v: 0xff3d3d3b },
       },
     },
   ],
