@@ -24,14 +24,17 @@ export default class MovieDetail extends MoviePage {
           text: "",
           textColor: 0xffffffff,
           fontSize: 45,
+          w: 1000,
+          flexItem: {},
         },
         x: 42,
         y: 20,
         zIndex: 10,
+        flex: {},
       },
       Overview: {
         x: 42,
-        y: 100,
+        y: 200,
         w: 1320,
         text: {
           text: "",
