@@ -24,7 +24,7 @@ export default class MoviePage extends Lightning.Component {
   }
 
   _toTile(movie, i) {
-    const spaceBetweenTiles = 350;
+    const spaceBetweenTiles = 310;
     return {
       type: Tile,
       x: spaceBetweenTiles * i,
