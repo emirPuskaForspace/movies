@@ -56,8 +56,4 @@ export default class Tile extends Lightning.Component {
       },
     });
   }
-
-  _firstEnable() {
-    this._refocus();
-  }
 }
