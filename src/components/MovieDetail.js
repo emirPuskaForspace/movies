@@ -131,7 +131,6 @@ export default class MovieDetail extends MoviePage {
     this.index = 0;
     this._refocus();
     this.repositionWrapper();
-    console.log("Ide enter");
   }
 
   _getFocused() {

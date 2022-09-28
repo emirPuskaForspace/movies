@@ -21,7 +21,6 @@ export default class MoviePage extends Lightning.Component {
       movieTiles.push(this._toTile(movie, i));
     }
     this.tag("Wrapper").patch({ children: movieTiles });
-    console.log('dodaje u slider');
   }
 
   _toTile(movie, i) {
