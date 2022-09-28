@@ -16,7 +16,6 @@ const defaultFetchParams = {
 };
 
 function getImageUrl(path, posterSize = basePosterSize) {
-  console.log("BASE IMAGE URL: " + baseImageUrl + posterSize + path);
   return baseImageUrl + posterSize + path;
 }
 
@@ -50,7 +49,6 @@ const loadMovies = async (path, params = {}) => {
     ...params,
   };
   const response = await axios.get(url, requestParams);
-  console.log(`Result: ${response}`);
   return response.data;
 };
 
@@ -67,7 +65,9 @@ const getMovieDetails = async (path, params = {}) => {
     ...defaultFetchParams,
     ...params,
   };
-  return fetch(url, requestParams).then((data) => data.json());
+  const response = await axios.get(url, requestParams);
+
+  return response.data;;
 };
 
 export { getImageUrl, getMovies, loadMovies, getMovieDetails, loadConfig };

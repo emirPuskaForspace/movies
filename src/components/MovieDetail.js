@@ -87,7 +87,7 @@ export default class MovieDetail extends MoviePage {
 
   async loadMovieDetails(movieId) {
     const movie = await getMovieDetails("/movie/" + movieId);
-    this.addDataToSlider("/movie/" + movieId + "/similar");
+    await this.addDataToSlider("/movie/" + movieId + "/similar");
 
     this.patch({
       Image: {
@@ -123,6 +123,15 @@ export default class MovieDetail extends MoviePage {
       this.index += 1;
     }
     this.repositionWrapper();
+  }
+
+  _handleEnter() {
+    const movieId = this.loadedData[this.index].id;
+    this.loadMovieDetails(movieId);
+    this.index = 0;
+    this._refocus();
+    this.repositionWrapper();
+    console.log("Ide enter");
   }
 
   _getFocused() {
